@@ -30,6 +30,22 @@ public class ProductoDA extends DataAccessCore{
 	}
 	
 	/**
+	 * Método que devuelve todos los productos que esten en la Base de datos.
+	 * La lista creada resultante tiene en orden los 4 mejores productos puntuados de mayor a menor puntuación.
+	 * @return lista de 4 productos de la base de datos con mejor puntuación
+	 * @return null en otro caso
+	 */
+	public static ResultSet bestProduct(){
+		try{
+			//Esta sentencia pone límite a la búsqueda en 4 productos ordenados de mayor a menor en orden de puntuación
+			return statement.executeQuery("SELECT A.*,AVG(B.PUNTUACION) FROM PRODUCTOS A, PRODUCTOS_PUNTUACION B WHERE A.id=B.PRODUCTO GROUP BY (A.ID) ORDER BY AVG(B.PUNTUACION) DESC LIMIT 4");
+		} catch (Exception ex) {
+			ex.printStackTrace();
+			return null; //en caso de excepción devuelve NULL.
+		}
+	}
+	
+	/**
 	 * Realiza una consulta a la Base de Datos utilizando un filtro para
 	 * obtener una lista parcial que cumpla la condición dada por el filtro.
 	 * @param filterProducto es el filtro a aplicar en la búsqueda parcial.
@@ -75,7 +91,7 @@ public class ProductoDA extends DataAccessCore{
 			+","+producto.getPrecio()+");");
 			 
 		} catch (Exception e) {  //Imprime la traza en caso de excepción junto a un mensaje de aviso.
-			System.out.println("\n>>>No ha sido posible introducir el producto en la BBDD\n>>>\n");
+			System.out.println("\n>>>No ha sido posible introducir el producto en la BBDD<<<\n\n");
 			e.printStackTrace();
 			return false; //en caso de fallo, retorna false
 			}

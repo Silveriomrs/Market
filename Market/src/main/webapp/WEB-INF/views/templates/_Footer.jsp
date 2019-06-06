@@ -1,5 +1,4 @@
-
-<footer class="page-footer font-small bg-light pt-4">
+<footer class="page-footer font-small bg-dark pt-4">
 
     <!-- Footer Links -->
     <div class="container-fluid text-center text-md-left">
@@ -47,37 +46,34 @@
           <div class="col-md-3 mb-md-0 mb-3">
 
             <!-- Links -->
-            <h5 class="text-uppercase">Links</h5>
+            <h5 class="text-uppercase">Operaciones Generales</h5>
 
             <ul class="list-unstyled">
               <li>
-                <a href="#!">Link 1</a>
+                <a href="#!">Hace algo nivel user1</a>
               </li>
               <li>
-                <a href="#!">Link 2</a>
+                <a href="#!">Hace algo nivel user2</a>
               </li>
               <li>
-                <a href="#!">Link 3</a>
+                <a href="#!">Hace algo nivel user3</a>
               </li>
               <li>
-                <a href="#!">Link 4</a>
+                <a href="#!">Hace algo nivel user4</a>
               </li>
             </ul>
 
           </div>
           <!-- Grid column -->
-
       </div>
       <!-- Grid row -->
-
     </div>
     <!-- Footer Links -->
 
     <!-- Copyright -->
     <div class="footer-copyright text-center py-3">© 2019 Copyright:
-      <a href="https://mdbootstrap.com/education/bootstrap/"> Abel Yécora y Silverio Rosales</a>
+      <a href="content/Images/Varios/epiblas.gif" title="Autores"> Abel Yécora y Silverio Rosales</a>
     </div>
     <!-- Copyright -->
-
-  </footer>
-  <!-- Footer -->
+</footer>
+ <!-- Footer -->

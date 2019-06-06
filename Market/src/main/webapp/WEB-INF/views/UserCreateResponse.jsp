@@ -3,7 +3,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <?xml version "1.0"?>
-<!-- File: claimresponseserverpage.jsp -->
+<!-- File: userCreateResponse.jsp -->
 <jsp:useBean id="userBean" class="Market_DO.User" scope="request" />
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtm111/DTD/xhtm111.dtd">
@@ -18,17 +18,14 @@
 </head>
 <body>
 
-		<jsp:include page="templates/_NavBarView.jsp" />
-	<p>gracias </p>
+	<jsp:include page="templates/_NavBarView.jsp" />
+	<p>gracias</p>
 	<jsp:getProperty name="userBean" property="nombre"/>
-	
-
 	<jsp:setProperty name="userBean" property="userType_Id" value= "2"/>
 	<%
 		String respuesta = UserDA.addUsuarios(userBean);
 		System.out.printf(respuesta);
 	%>
-	
-		<jsp:include page="templates/_Footer.jsp" />
+
 </body>
 </html>

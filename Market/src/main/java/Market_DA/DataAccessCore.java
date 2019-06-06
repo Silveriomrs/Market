@@ -12,7 +12,8 @@ import java.sql.Statement;
  * Esta clase en particular esta encargada de la introducción de los 
  * datos a usar en la práctica en la BBDD
  * 
- * @author silverio
+ * @author Abel Yécora
+ * @author Silverio Rosales
  * @version 201905281427
  */
 public class DataAccessCore {
@@ -22,24 +23,21 @@ public class DataAccessCore {
 	protected static Statement statement = null;
 
 	/**
-	 * Este médoto establece la conexión con la BBDD
+	 * Este médoto establece la conexión con la BBDD y la inicializa en caso de que no
+	 * lo estuviera. Realizando una comprobación previa.
 	 */
 	public static void conectarBBDD() {
 		try {
 			// Carga el Driver
 			Class.forName("org.hsqldb.jdbc.JDBCDriver");
-			connection = DriverManager.getConnection("jdbc:hsqldb:mem:memoria", "sa", "");
-			statement = connection.createStatement();
-			// Establece la conexión
+			// Establece la conexión e inicializa si no lo estaba
 			if (!comprobarBBDD()) {
-				System.out.println("\n\nLa BBDD NO ESTABA CONECTADA conectarBBDD\n\n");								
+				System.out.println("\n>>>La BBDD NO ESTABA CONECTADA NI INICIADA\n");	
+				connection = DriverManager.getConnection("jdbc:hsqldb:mem:memoria", "sa", "");
+				statement = connection.createStatement();
 				iniciarBBDD();
-				System.out.println("\n\nBBDD Iniciada por Excepción en ComprobarBBDD\n\n");
-				
-			} else {System.out.println("\nLa BBDD ya esta conectada\n");}
-				
-			//connection.isClosed();
-			//iniciarBBDD();
+				System.out.println(">>>BBDD Iniciada y conectada\n\n");			
+			} else {System.out.println("\n>>>La BBDD ya esta conectada\n");}
 			
 		} catch (Exception ex) {
 			ex.printStackTrace();
@@ -50,35 +48,22 @@ public class DataAccessCore {
 	/**
 	 * Este método comprueba mediante un query que existe la tabla tiendas, la cual es la base
 	 * de todos los datos de usuario, productos, etc. Sino existe realiza una conexión a la 
-	 * Base de datos.
-	 * @author Abel Yécora.
-	 * @return 
+	 * Base de datos. Para ello hace uso de las excepciones al realizar un Query.
+	 * @return true si la base de datos esta conectada e inicializada
+	 * @return false en caso de que la base de datos no este inicializada o conectada.
 	 */
-	public static boolean comprobarBBDD()
-	{
-		boolean conectada = false;
+	private static boolean comprobarBBDD(){
+		//Comprobación del estado de la BBDD mediante un query.
 		try{
-			//ResultSet resultSet;
-			//resultSet = statement.executeQuery("SELECT * FROM USERS");
-			System.out.println("\n\nComprobación BBDD PREVIO\n\n");
-			resultSet = statement.executeQuery("SELECT * FROM TIENDAS");
-			System.out.println("\n\nComprobación BBDD OK\n\n");
-			conectada = true;
-
-		} catch (Exception ex) {
-			//conectarBBDD();
-			//ex.printStackTrace();		
-			System.out.println("\n\nComprobación BBDD EXEPCION\n\n");
-			conectada =  false;
-			return conectada;
-		}
-		return conectada;
+			resultSet = statement.executeQuery("SELECT * FROM TIENDAS");			
+			return true; //Retorna true si la prueba ha tenido exito.
+		} catch (Exception ex) {return false;} //False en otro caso
 	}
 	
 	/**
 	 * Cierra la conexión con la base de datos.
 	 */
-	public void cerrarConexionBBDD() {
+	public static void cerrarConexionBBDD() {
 		try {statement.executeQuery("SHUTDOWN COMPACT");} 
 		catch (Exception ex) {ex.printStackTrace();}
 	}
@@ -113,12 +98,12 @@ public class DataAccessCore {
 		try {
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS USERS(\r\n"
 					+ "    ID INTEGER IDENTITY PRIMARY KEY,\r\n" 
-					+ "    NOMBRE varchar(40),\r\n" 
-					+ "    APELLIDO varchar(40),\r\n" 
-					+ "    EMAIL varchar(50),\r\n" 
+					+ "    NOMBRE varchar(25),\r\n" 
+					+ "    APELLIDO varchar(25),\r\n" 
+					+ "    EMAIL varchar(30),\r\n" 
 					+ "    TELEFONO varchar(12),\r\n" 
 					+ "    PASS varchar(8),\r\n"
-					+ "    CIUDAD varchar(50),\r\n" 
+					+ "    CIUDAD varchar(20),\r\n" 
 					+ "    DIRECCION varchar(100), \r\n" 
 					+ "    CP varchar(5), \r\n" 
 					+ "    USER_TYPE_ID integer,\r\n" //enlace con la tabla de Tipos de Usuarios
@@ -246,7 +231,7 @@ public class DataAccessCore {
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS PRODUCTOS(\r\n"
 					+ "    ID INTEGER IDENTITY PRIMARY KEY,\r\n" 
 					+ "    CATEGORIA_ID integer,\r\n"
-					+ "    TIENDA_ID integer,\r\n"  //Quizás debería eliminarse de la tabla. Sólo hay una tienda por ahora.
+					+ "    TIENDA_ID integer,\r\n"
 					+ "    MARCA_ID integer,\r\n" 
 					+ "    NOMBRE varchar(50),\r\n"
 					+ "    MODELO varchar(100),\r\n" 				
@@ -260,16 +245,17 @@ public class DataAccessCore {
 		} catch (SQLException e1) {e1.printStackTrace();}
 		//Insercción de algunos productos básicos
 		try {
-			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,IMAGEN,DESCRIPCION,CANTIDAD,PRECIO) VALUES(1,1,3,'Diablo II','Rol','diablo2.jpg','Juego de Rol',5,50);");
-			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,IMAGEN,DESCRIPCION,CANTIDAD,PRECIO) VALUES(1,1,2,'Comamand And Conquer','Estrategia','CommandAndConquer.jpg','Juego de estretegía', 5, 45);");
-			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,IMAGEN,DESCRIPCION,CANTIDAD,PRECIO) VALUES(2,1,3,'Set de Cocina','Blanco California','ElectrodomesticosDeCocina.jpg','Cocina completa',5,270);");
+			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,IMAGEN,DESCRIPCION,CANTIDAD,PRECIO) VALUES(1,1,3,'Diablo II','Rol','diablo2.jpg','Juego de Rol',5,50.98);");
+			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,IMAGEN,DESCRIPCION,CANTIDAD,PRECIO) VALUES(1,1,2,'Comamand And Conquer','Estrategia','CommandAndConquer.jpg','Juego de estretegía', 5, 45.73);");
+			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,IMAGEN,DESCRIPCION,CANTIDAD,PRECIO) VALUES(2,1,3,'Set de Cocina','Blanco California','ElectrodomesticosDeCocina.jpg','Cocina completa',5,270.34);");
 			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,IMAGEN,DESCRIPCION,CANTIDAD,PRECIO) VALUES(2,1,1,'Microondas','700Wattios','Microondas.jpg','Microondas',5,24);");
-			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,IMAGEN,DESCRIPCION,CANTIDAD,PRECIO) VALUES(2,1,3,'Set Imprescindible','Africa People','tostadorayMaquinaDeCoser.jpg', 'Tostadora máquina coser', 5, 80);");
+			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,IMAGEN,DESCRIPCION,CANTIDAD,PRECIO) VALUES(2,1,3,'Set Imprescindible','Africa People','tostadorayMaquinaDeCoser.jpg', 'Selladora de Sandwitchs', 5, 80);");
 			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,IMAGEN,DESCRIPCION,CANTIDAD,PRECIO) VALUES(2,1,4,'Picadilly','Destrozadora','Batidoras.jpg','Batidora',5,35);");
 			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,IMAGEN,DESCRIPCION,CANTIDAD,PRECIO) VALUES(2,1,5,'Aplastator','2000T','Exprimidoras.jpg', 'Exprimidor', 5, 15);");
 			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,IMAGEN,DESCRIPCION,CANTIDAD,PRECIO) VALUES(2,1,6,'Dorator','Olieo IV','Freidoras.jpg','Freidora', 5, 26);");
 			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,IMAGEN,DESCRIPCION,CANTIDAD,PRECIO) VALUES(3,1,6,'Holus','5000','computer.jpg','Ordenador PC', 2, 2666);");
 			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,IMAGEN,DESCRIPCION,CANTIDAD,PRECIO) VALUES(4,1,6,'Liberator','FreeSet','manoslibres.jpg','Set de manos libres', 400, 60);");
+			statement.executeUpdate("INSERT INTO PRODUCTOS (CATEGORIA_ID,TIENDA_ID,MARCA_ID,NOMBRE,MODELO,DESCRIPCION,CANTIDAD,PRECIO) VALUES(4,1,6,'Timafon','Surprises Ace','Producto en plan confianza', 30, 41.6);");
 		} catch (Exception e) {e.printStackTrace();}
 	}
 	
@@ -284,16 +270,16 @@ public class DataAccessCore {
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS PRODUCTOS_PUNTUACION(\r\n"
 					+ "    ID integer identity PRIMARY KEY,\r\n"
 					+ "    PRODUCTO integer,\r\n"
-					+ "    PUNTUACION integer,\r\n"
+					+ "    PUNTUACION decimal,\r\n"
 					+ "    CONSTRAINT FK_PP_P foreign key (PRODUCTO) references PRODUCTOS(ID)\r\n" + ");");
 		} catch (SQLException e1) {e1.printStackTrace();}
 		//Inserta algunas puntuaciones a los productos
 		try {
 			statement.executeUpdate("INSERT INTO PRODUCTOS_PUNTUACION (PRODUCTO,PUNTUACION) VALUES(0,4);");
-			statement.executeUpdate("INSERT INTO PRODUCTOS_PUNTUACION (PRODUCTO,PUNTUACION) VALUES(1,5);"); //Conflicto, el primary key == con la ID y eso hace que se repita
-			statement.executeUpdate("INSERT INTO PRODUCTOS_PUNTUACION (PRODUCTO,PUNTUACION) VALUES(2,4);");
+			statement.executeUpdate("INSERT INTO PRODUCTOS_PUNTUACION (PRODUCTO,PUNTUACION) VALUES(1,5);");
+			statement.executeUpdate("INSERT INTO PRODUCTOS_PUNTUACION (PRODUCTO,PUNTUACION) VALUES(2,4.7);");
 			statement.executeUpdate("INSERT INTO PRODUCTOS_PUNTUACION (PRODUCTO,PUNTUACION) VALUES(3,5);");
-			statement.executeUpdate("INSERT INTO PRODUCTOS_PUNTUACION (PRODUCTO,PUNTUACION) VALUES(4,4);");
+			statement.executeUpdate("INSERT INTO PRODUCTOS_PUNTUACION (PRODUCTO,PUNTUACION) VALUES(4,4.2);");
 			statement.executeUpdate("INSERT INTO PRODUCTOS_PUNTUACION (PRODUCTO,PUNTUACION) VALUES(5,3);");
 			statement.executeUpdate("INSERT INTO PRODUCTOS_PUNTUACION (PRODUCTO,PUNTUACION) VALUES(6,2);");
 			statement.executeUpdate("INSERT INTO PRODUCTOS_PUNTUACION (PRODUCTO,PUNTUACION) VALUES(7,4);");
@@ -339,7 +325,7 @@ public class DataAccessCore {
 		try {
 			statement.executeUpdate("CREATE TABLE IF NOT EXISTS COMPRAS_ESTADOS(\r\n"
 					+ "    ID integer identity PRIMARY KEY,\r\n"
-					+ "    ESTADO varchar(30)\r\n" + ");"); //Cambiado NOMBRE por ESTADO
+					+ "    ESTADO varchar(30)\r\n" + ");"); //RELACIONAR CON EL CARRITO CON CAMPO EXTRA
 		} catch (SQLException e1) {e1.printStackTrace();}
 		//Insercción de los posibles estados
 		try {
@@ -386,7 +372,7 @@ public class DataAccessCore {
 					+ "    COMPRA_ID integer,\r\n"
 					+ "    PRODUCTO_ID integer,\r\n"
 					+ "    CANTIDAD integer,\r\n"
-					+ "    CONSTRAINT PK_CI primary key (COMPRA_ID, PRODUCTO_ID) ,\r\n" //¿Es necesario doble key?
+					+ "    CONSTRAINT PK_CI primary key (COMPRA_ID, PRODUCTO_ID) ,\r\n" //Doble key necesaria para relación item-compra.
 					+ "    CONSTRAINT FK_CI_C foreign key (COMPRA_ID) references CARRITO(ID),\r\n"
 					+ "    CONSTRAINT FK_CI_P foreign key (PRODUCTO_ID) references PRODUCTOS(ID)\r\n" + ");");
 
