@@ -1,6 +1,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags/form"%>
 <%@ page session="false" %>
+
 <!DOCTYPE html>
 <html title="Electro Market">
     <head>
@@ -18,7 +19,7 @@
             <c:forEach var="produc" items="${listProductos}" varStatus="tagStatus">
 			    <div class="col-md-3">
                 <div class="thumbnail">
-                <a href="javascript:alert('Sin enlace colega');">
+                 <a href="productoRequest?id=${produc.getId()}&categoria_Id=${produc.getCategoria_Id()}&tienda_Id=${produc.getTienda_Id()}&marca_Id=${produc.getMarca_Id()}&nombre=${produc.getNombre()}&modelo=${produc.getModelo()}&imagen=${produc.getImagen()}&descripcion=${produc.getDescripcion()}&cantidad=${produc.getCantidad()}&precio=${produc.getPrecio()}&puntos=${produc.getPuntuacion()}">
                 <img id="imagenID" title="${produc.getNombre()}" src="content/Images/Productos/${produc.getImagen()}" alt="Imagen del Producto" width="200" height="150">
                 </a>
                 <p><strong>${produc.getDescripcion()}</strong></p> 
