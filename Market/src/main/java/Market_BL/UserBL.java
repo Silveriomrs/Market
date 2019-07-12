@@ -19,17 +19,16 @@ public class UserBL {
 	 * retorna la lista de usuarios extraida de la base de datos
 	 * en formato texto, convertida en una lista de instancias de la clase User. En caso de error o de 
 	 * excepción se devuelve NULL
-	 * @return listUser lista de instancias de User
-	 * @return null en otro caso
+	 * @return listUser lista de instancias de User, null en otro caso
 	 */
-	public static List<User> darUsuarios()
+	public static List<User> listaUsuarios()
 	{
 		try {
 			ResultSet resultSet;
 			//Creación de una lista de Usuarios
 			List<User> listUsers = new ArrayList<User>();
 			// se recibe el resultSet de Usuarios, la cuhal es una lista de usuarios
-			resultSet = Market_DA.UserDA.darUsuarios();
+			resultSet = Market_DA.UserDA.listaUsuarios();
 			
 			//Bucle para añadir items a la lista	
 			while (resultSet.next()) {

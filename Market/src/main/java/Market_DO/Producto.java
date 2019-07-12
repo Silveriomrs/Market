@@ -33,7 +33,7 @@ public class Producto {
 	 * @param descripcion descripción del producto
 	 * @param cantidad número de items que hay del producto
 	 * @param precio precio de cada unidad de producto
-	 * @param puntuacion la puntuación del producto.
+	 * @param puntos la puntuación del producto.
 	 */
 	public Producto(int id, int categoria_Id, int tienda_Id, int marca_Id, String nombre, String modelo, String imagen, String descripcion,
 			int cantidad, float precio, float puntos) {
@@ -59,7 +59,6 @@ public class Producto {
 	public Producto() {	
 		super();
 		this.puntuacion = 0.0F;
-		
 	}
 	
 	/**

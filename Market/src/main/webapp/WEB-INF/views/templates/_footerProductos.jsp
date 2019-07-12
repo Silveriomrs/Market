@@ -1,3 +1,6 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<!DOCTYPE html><html lang="es"><meta charset="UTF-8">
+
 <footer class="page-footer font-small bg-dark pt-4">
 
     <!-- Footer Links -->
@@ -11,7 +14,7 @@
 
           <!-- Content -->
           <h5 class="text-uppercase">Secciones de Productos</h5>
-          <p>Desde aquÌ puede listar los productos de una secciÛn concreta</p>
+          <p>Desde aqu√≠ puede listar los productos de una secci√≥n concreta</p>
 
         </div>
         <!-- Grid column -->
@@ -22,20 +25,20 @@
         <div class="col-md-3 mb-md-0 mb-3">
 
             <!-- Links -->
-            <h5 class="text-uppercase">CategorÌas</h5>
+            <h5 class="text-uppercase">Categor√≠as</h5>
 
             <ul class="list-unstyled">
               <li>
                 <a href="#!">Video Juegos</a>
               </li>
               <li>
-                <a href="#!">ElectrodomÈsticos</a>
+                <a href="#!">Electrodom√©sticos</a>
               </li>
               <li>
-                <a href="#!">Inform·tica</a>
+                <a href="#!">Inform√°tica</a>
               </li>
               <li>
-                <a href="#!">TelefonÌa</a>
+                <a href="#!">Telefon√≠a</a>
               </li>
             </ul>
 
@@ -53,7 +56,7 @@
                 <a href="#!">Venta</a>
               </li>
               <li>
-                <a href="#!">ReparaciÛn</a>
+                <a href="#!">Reparaci√≥n</a>
               </li>
               <li>
                 <a href="#!">Servicio Postventa</a>
@@ -73,8 +76,8 @@
     <!-- Footer Links -->
 
 <!-- Copyright -->
-    <div class="footer-copyright text-center py-3" data-toggle="modal" data-target="#autores">© 2019 Copyright:
-      <a href="#autores" title="Autores"> Abel YÈcora y Silverio Rosales</a>
+    <div class="footer-copyright text-center py-3" data-toggle="modal" data-target="#autores">&copy; 2019 Copyright:
+      <a href="#autores" title="Autores"> Abel Y√©cora y Silverio Rosales</a>
     </div>
     
     	<div class="modal fade" id="autores" role="dialog">

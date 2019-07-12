@@ -56,47 +56,45 @@ public class ProductosBL {
 		}
 	}
 	/**
-	 * Funcion para devolver una lista de los 4 productos mejor puntuados
-	 * @author ayecora
-	 * @return List<Producto>
+	 * Funcion para devolver una lista de los 4 productos mejor puntuados.
+	 * @return lista de hasta los 4 mejores productos de la base de datos.
+	 *  null en caso de que no se haya podido conectar con la base de datos o no existan productos.
 	 */
 	public static List<Producto> bestProduct() {
+		//Lista de productos
+		List<Producto> listProductos = new ArrayList<Producto>();
+		ResultSet resultSet = null;
 		try {
-			//Lista de productos
-			List<Producto> listProductos = new ArrayList<Producto>();			
 			//Ejecuta la búsqueda de los 5 productos con más puntuacion
-			ResultSet resultSet = Market_DA.ProductoDA.bestProduct() ;			
-			//Bucle para añadir a una lista instancias de los productos seleccionados	
-			while (resultSet.next()) {
-				// Añade el item a la lista de productos	
-				listProductos.add(new Producto(
-						resultSet.getInt("Id"),
-						resultSet.getInt("Categoria_Id"),
-						resultSet.getInt("Tienda_Id"),
-						resultSet.getInt("Marca_Id"),
-						resultSet.getString("Nombre"),
-						resultSet.getString("Modelo"),
-						resultSet.getString("Imagen"),
-						resultSet.getString("Descripcion"),
-						resultSet.getInt("Cantidad"),
-						resultSet.getFloat("Precio"),
-						resultSet.getFloat("C11"))); //¿Qué es C11? cambiar nomenclatura o describirla. Debe ser Double
+			resultSet = Market_DA.ProductoDA.bestProduct() ;
+			if(resultSet != null) {
+				//Bucle para añadir a una lista instancias de los productos seleccionados	
+				while (resultSet.next()) {
+					// Añade el item a la lista de productos	
+					listProductos.add(new Producto(
+							resultSet.getInt("Id"),
+							resultSet.getInt("Categoria_Id"),
+							resultSet.getInt("Tienda_Id"),
+							resultSet.getInt("Marca_Id"),
+							resultSet.getString("Nombre"),
+							resultSet.getString("Modelo"),
+							resultSet.getString("Imagen"),
+							resultSet.getString("Descripcion"),
+							resultSet.getInt("Cantidad"),
+							resultSet.getFloat("Precio"),
+							resultSet.getFloat("C11"))); //Resultado de la puntuación media.
+				}
 			}
-			//Devuelve la lista de productos
-			return listProductos;
-		} catch (Exception ex) {
-			ex.printStackTrace();
-			return null; //Devuelve null en otro caso.
-		}
+		} catch (Exception ex) {ex.printStackTrace();}
+		return listProductos; //Devuelve la lista de productos
 	}
 	
 	/**
 	 * Comprueba la existenacia de un producto en la base de datos. Para ello, se le pasa el ID del producto.
-	 * @param Resault rs resultados de una búsqueda en la base de datos.
-	 * @param ID del producto a buscar, si el ID es negativo indica que la búsqueda será por campo (String).
+	 * @param rs resultados de una búsqueda en la base de datos.
+	 * @param id del producto a buscar, si el ID es negativo indica que la búsqueda será por campo (String).
 	 * @param campo es el parámetro a buscar que no sea el ID (nombre, modelo, imagen, descripción)
-	 * @return true en caso de que exista.
-	 * @return false en caso de que no exista el producto en la base de datos.
+	 * @return true en caso de que exista, false en caso de que no exista el producto en la base de datos.
 	 */
 	public static boolean existeProducto(ResultSet rs, int id, String campo) {
 		try { //realiza búsqueda entre los resultados.

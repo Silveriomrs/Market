@@ -28,25 +28,25 @@ public final class User implements Serializable{
 
 	/**
 	 * Constructor de la clase User, configura mediante parámetros la instancia a crear.
-	 * @param Id del usuario
-	 * @param Nombre del usuario
+	 * @param id del usuario
+	 * @param nombre del usuario
 	 * @param apellido del usuario
-	 * @param Email del usuario
+	 * @param email del usuario
 	 * @param telefono del usuario
-	 * @param Pass clave personal del usuario
-	 * @param Ciudad de residencia habitual del usuario
+	 * @param pass clave personal del usuario
+	 * @param ciudad de residencia habitual del usuario
 	 * @param direccion del usuario
 	 * @param CP Código Postal del usuario
 	 * @param UserType Tipo de Usuario, 1 Admin, 2 Usuario generico (Cliente)
 	 */
-	public User(int Id, String Nombre,String apellido, String Email, String telefono, String Pass, String Ciudad, String direccion, String CP, int UserType) {
-		this.id = Id;
-		this.nombre =Nombre;
+	public User(int id, String nombre,String apellido, String email, String telefono, String pass, String ciudad, String direccion, String CP, int UserType) {
+		this.id = id;
+		this.nombre =nombre;
 		this.apellido = apellido;
-		this.email = Email;
+		this.email = email;
 		this.telefono = telefono;
-		this.pass = Pass;
-		this.ciudad = Ciudad;
+		this.pass = pass;
+		this.ciudad = ciudad;
 		this.direccion = direccion;
 		this.CP = CP;
 		this.userType_Id = UserType;		
@@ -150,7 +150,7 @@ public final class User implements Serializable{
 	public void setApellido(String apellido) {this.apellido = apellido;}
 
 	/**
-	 * @return the direccion
+	 * @return la dirección
 	 */
 	public String getDireccion() {return direccion;}
 
@@ -160,7 +160,15 @@ public final class User implements Serializable{
 	 */
 	public void setDireccion(String direccion) {this.direccion = direccion;}
 
+	/**
+	 * Devuelve el tipo de usuario.
+	 * @return el tipo de usuario.
+	 */
 	public int getUserType_Id() {return userType_Id;}
 
+	/**
+	 * Establece el tipo de usuario.
+	 * @param userType_Id el tipo de usuario a establecer.
+	 */
 	public void setUserType_Id(int userType_Id) {this.userType_Id = userType_Id;}
 }
